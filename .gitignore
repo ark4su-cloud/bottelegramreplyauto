@@ -1,0 +1,6 @@
+# Ignoră fișierele de test și sesiunile secundare
+session_test.session
+test_conn.py
+__pycache__/
+*.pyc
+.DS_Store
