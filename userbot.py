@@ -27,9 +27,17 @@ def save_replied_users():
         print(f"[EROARE] Nu s-a putut salva istoricul clienților: {e}")
 
 from telethon import connection
+from telethon.sessions import StringSession
 
-# Inițializăm clientul Telethon (cu conexiune securizată și mascată ConnectionTcpObfuscated pentru a evita blocajele de rețea)
-client = TelegramClient('session_personal', config.API_ID, config.API_HASH, connection=connection.ConnectionTcpObfuscated)
+# Verificăm dacă avem o sesiune persistentă stocată ca text (StringSession) pe server
+session_str = os.environ.get("TELEGRAM_SESSION")
+
+if session_str:
+    print("[INFO] Pornire folosind StringSession (cloud persistent)...")
+    client = TelegramClient(StringSession(session_str), config.API_ID, config.API_HASH, connection=connection.ConnectionTcpObfuscated)
+else:
+    print("[INFO] Pornire folosind session_personal local...")
+    client = TelegramClient('session_personal', config.API_ID, config.API_HASH, connection=connection.ConnectionTcpObfuscated)
 
 @client.on(events.NewMessage(incoming=True))
 async def handle_new_message(event):
