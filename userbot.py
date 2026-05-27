@@ -33,6 +33,7 @@ from telethon.sessions import StringSession
 session_str = os.environ.get("TELEGRAM_SESSION")
 
 if session_str:
+    session_str = session_str.strip()
     print("[INFO] Pornire folosind StringSession (cloud persistent)...")
     client = TelegramClient(StringSession(session_str), config.API_ID, config.API_HASH, connection=connection.ConnectionTcpObfuscated)
 else:
